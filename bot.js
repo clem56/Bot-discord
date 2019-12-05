@@ -37,7 +37,7 @@ client.on('message', msg => {
     msg.reply('Pour t"inscrire ecrit !inscription Nom Prénom NumeroPromotion ');
 	conn.getFormation(msg);
   }else if (msg.content === 'help') {
-     msg.reply('Commande : ping , inscription,formation, !inscription');
+     msg.reply('Commande : ping , inscription,formation, !inscription, !coursDuJour, !coursDeLaSemaine');
   }else if (msg.content === 'formation') {
 		conn.getFormation(msg);
   }else if (msg.content.startsWith('test')) {
@@ -71,19 +71,36 @@ client.on('message', msg => {
 	
 	//msg.reply(etudiant.getPrenom());
 	var message = msg.content.substring(13, msg.length)
-	console.log(message);
+	//console.log(message);
 	var params = message.split(' ');
 	//console.log("params 0 : "+params[0]+", params 1 :"+ params[1] )
 	if(params.length>=1 && params[0] != ""){
 		
-		console.log(params[0]);
+		//console.log(params[0]);
 		conn.getCoursDuJour(msg,params);
 	}else{
 		msg.reply('Erreur : entrer !cours votreIdentifiantEtudiant')
 		
 	}
+	
+   }
+   	if (msg.content.startsWith('!coursDeLaSemaine')) {
+	
+	//msg.reply(etudiant.getPrenom());
+	var message = msg.content.substring(18, msg.length)
+	//console.log(message);
+	var params = message.split(' ');
+	//console.log("params 0 : "+params[0]+", params 1 :"+ params[1] )
+	if(params.length>=1 && params[0] != ""){
+		
+		//console.log(params[0]);
+		conn.getCoursDeLaSemaine(msg,params);
+	}else{
+		msg.reply('Erreur : entrer !cours votreIdentifiantEtudiant')
+		
+	}
 
-  }
+   }
   
   
   
