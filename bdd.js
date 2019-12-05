@@ -1,5 +1,5 @@
 var mysql = require('mysql');
-const Etudiant = require ('./etudiant.js');
+
 class BDD{
 	
 	
@@ -33,7 +33,7 @@ class BDD{
 	}
 	
 	addEtudiant(msg,params){
-		let etudiant = new Etudiant(params[0],params[1],params[2]);
+		
 		var sql1 = "INSERT INTO `etudiant`(`nom`, `prenom`,`promo_etudiante`) VALUES ('"+params[0]+"','"+params[1]+"',"+params[2]+")";
 		 this.conn.query(sql1, function(err, results) {
             if (err) throw err;
@@ -44,7 +44,7 @@ class BDD{
 		this.conn.query(sql2, function(err, results) {
             if (err) throw err;
             //console.log(results[0].MAX);
-			msg.reply("Bienvenue au CESI : "+etudiant.getIdentite()+", ton numéro d'identifiant étudiant est le : "+results[0].MAX)
+			msg.reply("Bienvenue au CESI : "+params[0]+" "+params[1]+", ton numéro d'identifiant étudiant est le : "+results[0].MAX)
         });
 	}
 	
@@ -94,10 +94,28 @@ class BDD{
 			
         });
 	
-		
 	}
 
-	
-}
 
+		getCoursDeDemain(msg,params){
+		
+		//var sql1 = "SELECT * FROM `cours` WHERE promotion = (SELECT promotion FROM `etudiant` WHERE id_etudiant = "+params[0]+") and Date_cours = CURDATE()";    
+		
+		 // var sql1 = "SELECT *,DATE_FORMAT(Date_cours,, '%Y/%m/%d') FROM cours INNER JOIN intervenant ON cours.intervenant_cours = intervenant.id_intervenant  WHERE promotion = (SELECT promo_etudiante FROM `etudiant`WHERE id_etudiant = "+params[0]+" ) and Date_cours >= DATE_FORMAT(DATE_SUB(now(),interval weekday(now()) day ), '%Y/%m/%d') ORDER BY Date_cours ASC;";
+			var sql1 = "SELECT *,DATE_FORMAT(Date_cours, '%d/%m/%Y')AS date_format FROM cours INNER JOIN intervenant ON cours.intervenant_cours = intervenant.id_intervenant  WHERE promotion = (SELECT promo_etudiante FROM `etudiant`WHERE id_etudiant = "+params[0]+" )  and Date_cours >= DATE_FORMAT(DATE_ADD(now(), INTERVAL 1 DAY ), '%Y/%m/%d') ORDER BY Date_cours ASC;";
+			this.conn.query(sql1, function(err, results) {
+            if (err) throw err;
+            //console.log("cours du jours!");
+			//console.log(results);
+			if(results != ""){
+				var res ="";
+			
+				msg.reply("Cours de : "+results[0].intitule+", avec "+results[0].nom_i+" "+results[0].prenom_i+", le : "+results[0].date_format+"\n");
+			}else{
+				msg.reply("Vous n'avez pas de cours demain ");
+			}
+			
+        });
+		}
+}
 module.exports=BDD

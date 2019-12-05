@@ -79,7 +79,7 @@ client.on('message', msg => {
 		//console.log(params[0]);
 		conn.getCoursDuJour(msg,params);
 	}else{
-		msg.reply('Erreur : entrer !cours votreIdentifiantEtudiant')
+		msg.reply('Erreur : entrer !coursDuJour votreIdentifiantEtudiant')
 		
 	}
 	
@@ -96,12 +96,29 @@ client.on('message', msg => {
 		//console.log(params[0]);
 		conn.getCoursDeLaSemaine(msg,params);
 	}else{
-		msg.reply('Erreur : entrer !cours votreIdentifiantEtudiant')
+		msg.reply('Erreur : entrer !coursDeLaSemaine votreIdentifiantEtudiant')
 		
 	}
 
    }
   
+  if (msg.content.startsWith('!coursDeDemain')) {
+	
+	//msg.reply(etudiant.getPrenom());
+	var message = msg.content.substring(15, msg.length)
+	//console.log(message);
+	var params = message.split(' ');
+	//console.log("params 0 : "+params[0]+", params 1 :"+ params[1] )
+	if(params.length>=1 && params[0] != ""){
+		
+		//console.log(params[0]);
+		conn.getCoursDeDemain(msg,params);
+	}else{
+		msg.reply('Erreur : entrer !coursDeDemain votreIdentifiantEtudiant')
+		
+	}
+
+   }
   
   
   
