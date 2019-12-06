@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const auth = require('./auth.json');
-const Etudiant = require ('./etudiant.js');
+
 const Promotion = require ('./promotion.js');
 const BDD = require('./bdd.js');
 
